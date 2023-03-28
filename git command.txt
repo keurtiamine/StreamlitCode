@@ -1,0 +1,3 @@
+git add . 
+git commit -m"Modifications code"
+git push
