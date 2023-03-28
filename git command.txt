@@ -1,3 +1,4 @@
+cd Documents/StreamlitCode
 git add . 
 git commit -m"Modifications code"
 git push
