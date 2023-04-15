@@ -36,7 +36,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Chargement des données depuis un fichier Excel
-df = pd.read_excel('donnees_energie.xlsx')
+df = pd.read_excel('test corail_08-06-2022_fc250kHz_fe2MHz_pas0.125_0.xlsx')
 
 # Affichage du titre de l'interface graphique
 st.title('Pilotage de la production d\'énergie dans une usine')
