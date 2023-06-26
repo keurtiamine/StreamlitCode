@@ -32,9 +32,9 @@ st.dataframe(excel_data)
 
 excel_path = "Production vapeur HP.xlsx"
 excel_data = pd.read_excel(excel_path)
-table_caption = "Ces tableaux seront utilisés afin de pouvoir calculer les différents KPI suivants"
-
-# Affichage du tableau Excel avec légende
 st.title("Production de la vapeur HP")
-st.write(table_caption)
-st.write(excel_data)
+st.dataframe(excel_data)
+
+st.write("Ces tableaux ont pour but le calcul des différents KPI suivants :")
+st.markdown("1- Capacité de production inutilisée")
+
