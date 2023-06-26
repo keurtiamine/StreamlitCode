@@ -5,6 +5,11 @@ st.set_page_config(layout="wide")
 st.markdown(
     """
     <style>
+   
+    body {
+        background-color: coral; /* Replace #f0f0f0 with your desired background color */
+    }
+    
     /* Modifier la police et la taille du titre */
     .title {
         font-family: 'Arial', sans-serif;
@@ -93,6 +98,7 @@ def kpi():
     # fill the data frame capacite_productio_inutilisee with the values month and capacitemax-capacitemonth from production_vapeur
     capacite_production_inutilisee['Mois'] = production_vapeur['Mois']
     capacite_production_inutilisee['Capacité de production inutilisée'] = capacite_max - production_vapeur['Prod\nSAP']
+    st.write("capacite_production_inutilisee['Capacité de production inutilisée'] = capacite_max - production_vapeur['Prod\nSAP']")
     capacite_production_inutilisee['pourcentage inutilisé'] = (capacite_production_inutilisee[
                                                                    'Capacité de production inutilisée'] / capacite_max) * 100
     capacite_production_inutilisee["Nombre d'heure de pannes machine/ maintenance"] = capacite_production_inutilisee[
@@ -136,6 +142,7 @@ def kpi():
                                                                                                 'Production\nRéalisée (MWH)\nGTA'] * 3.6 * (
                                                                                                         10 ** 9)) / (
                                                                                                        720 * energieTotal)) * 100
+    st.write("rendement_production_electrique['Rendement de la production d'énergie électrique'] = ((energie_electrique'Production Réalisée (MWH) GTA'] * 3.6 * (10 ** 9)) / (720 * energieTotal)) * 100")
     st.dataframe(rendement_production_electrique.iloc[1:13, :])
     st.write("Le rendement de la production d'énergie électrique est de : ",
              rendement_production_electrique['Rendement de la production d\'énergie électrique'].iloc[1: 13].mean(),
@@ -148,6 +155,7 @@ def kpi():
     consomationDetente = production_vapeur['Consommation']['Détente']
     productionSap = production_vapeur['Prod\nSAP']['Unnamed: 1_level_1']
     taux_rejet_vapeur['Taux de rejet de vapeur HP'] = ((consomationDetente) / productionSap) * 100
+    st.write("taux_rejet_vapeur['Taux de rejet de vapeur HP'] = ((consomationDetente) / productionSap) * 100")
     st.dataframe(taux_rejet_vapeur.iloc[1:13, :])
     st.write("Le taux de rejet de vapeur HP est de : ",
              taux_rejet_vapeur['Taux de rejet de vapeur HP'].iloc[1: 13].mean(), "%")
@@ -160,6 +168,7 @@ def kpi():
                                                                                         'Production\nRéalisée (MWH)\nGTA'] / \
                                                                                     energie_electrique[
                                                                                         'Conso\nUsine'] * 100
+    st.write("taux_productivite_electrique['Taux de productivité de l\'énergie électrique'] = energie_electrique'Production Réalisée (MWH) GTA'] / energie_electrique'Conso Usine'] * 100")
     st.dataframe(taux_productivite_electrique.iloc[1:13, :])
     st.write("Le taux de productivité de l'énergie électrique est de : ",
              taux_productivite_electrique['Taux de productivité de l\'énergie électrique'].iloc[1: 13].mean(), "%")
