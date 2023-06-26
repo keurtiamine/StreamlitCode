@@ -5,7 +5,7 @@ from pdf2image import convert_from_path
 st.title("Affichage d'un PDF")
 
 # Chemin vers le fichier PDF
-pdf_path = "C:\Users\Amine.K\Downloads\SCHEMA BOUCLE EAU VAPEUR.pdf"
+pdf_path = "\SCHEMA BOUCLE EAU VAPEUR.pdf"
 
 # Conversion du PDF en images
 images = convert_from_path(pdf_path)
