@@ -1,3 +1,4 @@
 openpyxl
 matplotlib
 numpy
+pdf2image
