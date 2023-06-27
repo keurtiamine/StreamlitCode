@@ -131,8 +131,7 @@ def kpi():
     st.dataframe(fiabilite_prevision.iloc[1:13, :])
     st.write("La fiabilité des prévisions est de : ",
              fiabilite_prevision['Rapport de Fiabilité Réalisée/Prévision'].iloc[1: 13].mean(), "%")
-    st.markdown("### KPI 2: Fiabilité des planings et des prévisions")
-    st.dataframe(fiabilite_prevision)
+    
 
 
     st.markdown("3- Rendement de la production d'énergie électrique")
