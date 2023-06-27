@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
 
 #style use the entire screen width
 st.set_page_config(layout="wide")
