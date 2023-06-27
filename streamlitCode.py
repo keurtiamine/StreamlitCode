@@ -39,8 +39,10 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
 # Titre de l'interface graphique
+st.markdown("<h1 style='text-align: center;'>Interface graphique PMP</h1>", unsafe_allow_html=True)
+
+
 st.title("Affichage intégral de la boucle eau-vapeur")
 
 # Chemin vers l'image
