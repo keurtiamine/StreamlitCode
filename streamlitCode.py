@@ -70,6 +70,20 @@ if tableau_previsionel_file is not None:
     st.write("File uploaded successfully.")
     st.write("File Name:", tableau_previsionel_file.name)
     st.dataframe(tableau_previsionel)
+     # Préparation des données pour l'entraînement du modèle
+    X_train = tableau_previsionel.index.values.reshape(-1, 1)
+    y_train = tableau_previsionel['Production\nPrévue (MWH)\nGTA']
+
+    # Entraînement du modèle de régression linéaire
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+
+    # Prédiction de la production pour l'année suivante
+    next_year = X_train[-1][0] + 1
+    predicted_production = model.predict([[next_year]])
+
+    st.write("Prédiction de la production pour l'année suivante :")
+    st.write(predicted_production)	
 
 ## tableau energie electrique
 st.title("Production de l'énergie électrique")
