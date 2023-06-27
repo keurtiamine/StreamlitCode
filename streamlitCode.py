@@ -131,7 +131,8 @@ def kpi():
     st.dataframe(fiabilite_prevision.iloc[1:13, :])
     st.write("La fiabilité des prévisions est de : ",
              fiabilite_prevision['Rapport de Fiabilité Réalisée/Prévision'].iloc[1: 13].mean(), "%")
-    st.line_chart(fiabilite_prevision['Rapport de Fiabilité Réalisée/Prévision'][:12])
+    st.line_chart(fiabilite_prevision['Rapport de Fiabilité Réalisée/Prévision'][:13])
+
 
 
 
