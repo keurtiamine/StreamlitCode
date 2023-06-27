@@ -113,7 +113,14 @@ def kpi():
                                            "Nombre d'heure de pannes machine/ maintenance"] < 0, "Nombre d'heure de pannes machine/ maintenance"] = 0
 
     st.dataframe(capacite_production_inutilisee.iloc[1:13, :])
-    st.line_chart(capacite_production_inutilisee['Capacité de production inutilisée'][:13])
+    fig_kpi1 = plt.figure()
+    ax_kpi1 = fig_kpi1.add_subplot(111)
+    ax_kpi1.plot(capacite_production_inutilisee['Mois'][:13], capacite_production_inutilisee['Capacité de production inutilisée'][:13], marker='o')
+    ax_kpi1.plot(capacite_production_inutilisee['Mois'][:13], capacite_production_inutilisee['Nombre d\'heures de pannes machine/maintenance'][:13], marker='o')
+    ax_kpi1.set_xlabel('Mois')
+    ax_kpi1.set_ylabel('Valeurs')
+    ax_kpi1.legend(['Capacité de production inutilisée', 'Nombre d\'heures de pannes machine/maintenance'])
+    st.pyplot(fig_kpi1)
 
     st.markdown("2- Fiabilité des planings et des prévisions")
 
