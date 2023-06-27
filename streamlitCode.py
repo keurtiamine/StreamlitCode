@@ -176,13 +176,3 @@ def kpi():
 
 if production_vapeur_file is not None and energie_electrique_file is not None and tableau_previsionel_file is not None:
     kpi()
-
-df = pd.read_excel("Production vapeur HP.xlsx")
-df["Mois"] = df["Mois"].dt.month
-df_monthly = df.groupby("Mois")["Prod\nSAP"].sum()
-fig, ax = plt.subplots()
-df_monthly.plot(kind="bar", ax=ax)
-ax.set_xlabel("Mois")
-ax.set_ylabel("Production de vapeur HP")
-ax.set_title("Production de vapeur HP par mois")
-st.pyplot(fig)
