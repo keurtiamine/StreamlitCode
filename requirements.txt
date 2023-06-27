@@ -2,4 +2,4 @@ openpyxl
 matplotlib
 numpy
 pdf2image
-sklearn.linear_model
+scikit-learn
