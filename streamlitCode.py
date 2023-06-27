@@ -155,6 +155,7 @@ def kpi():
     st.write("Le rendement de la production d'énergie électrique est de : ",
              rendement_production_electrique['Rendement de la production d\'énergie électrique'].iloc[1: 13].mean(),
              "%")
+    st.line_chart(rendement_production_electrique['Rendement de la production d\'énergie électrique'])
 
     st.markdown("4- Taux de rejet de vapeur HP")
     # Taux de rejet de vapeur HP = (Vapeur HP rejetée / Vapeur HP produite) * 100
@@ -167,6 +168,7 @@ def kpi():
     st.dataframe(taux_rejet_vapeur.iloc[1:13, :])
     st.write("Le taux de rejet de vapeur HP est de : ",
              taux_rejet_vapeur['Taux de rejet de vapeur HP'].iloc[1: 13].mean(), "%")
+    st.line_chart(taux_rejet_vapeur['Taux de rejet de vapeur HP'])
 
     st.markdown("5- Taux de productivité de l'énergie électrique")
     # Taux de productivité de l'énergie électrique = (Énergie électrique produite / Énergie consommé) * 100
@@ -180,6 +182,7 @@ def kpi():
     st.dataframe(taux_productivite_electrique.iloc[1:13, :])
     st.write("Le taux de productivité de l'énergie électrique est de : ",
              taux_productivite_electrique['Taux de productivité de l\'énergie électrique'].iloc[1: 13].mean(), "%")
+    st.line_chart(taux_productivite_electrique['Taux de productivité de l\'énergie électrique'])
 
 if production_vapeur_file is not None and energie_electrique_file is not None and tableau_previsionel_file is not None:
     kpi()
