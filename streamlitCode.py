@@ -113,6 +113,7 @@ def kpi():
                                            "Nombre d'heure de pannes machine/ maintenance"] < 0, "Nombre d'heure de pannes machine/ maintenance"] = 0
 
     st.dataframe(capacite_production_inutilisee.iloc[1:13, :])
+    st.line_chart(capacite_production_inutilisee['Capacité de production inutilisée'][:13])
 
     st.markdown("2- Fiabilité des planings et des prévisions")
 
