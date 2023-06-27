@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
-from sklearn.linear_model import LinearRegression
+import LinearRegression from sklearn.linear_model 
 
 #style use the entire screen width
 st.set_page_config(layout="wide")
@@ -71,7 +71,7 @@ if tableau_previsionel_file is not None:
     st.write("File uploaded successfully.")
     st.write("File Name:", tableau_previsionel_file.name)
     st.dataframe(tableau_previsionel)
-     # Préparation des données pour l'entraînement du modèle
+    # Préparation des données pour l'entraînement du modèle
     X_train = tableau_previsionel.index.values.reshape(-1, 1)
     y_train = tableau_previsionel['Production\nPrévue (MWH)\nGTA']
 
@@ -84,7 +84,8 @@ if tableau_previsionel_file is not None:
     predicted_production = model.predict([[next_year]])
 
     st.write("Prédiction de la production pour l'année suivante :")
-    st.write(predicted_production)	
+    st.write(predicted_production)
+    
 
 ## tableau energie electrique
 st.title("Production de l'énergie électrique")
