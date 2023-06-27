@@ -178,7 +178,7 @@ if production_vapeur_file is not None and energie_electrique_file is not None an
     kpi()
 
 df = pd.read_excel("Production vapeur HP.xlsx")
-df["Mois"] = df["Date"].dt.month
+df["Mois"] = df["Mois"].dt.month
 df_monthly = df.groupby("Mois")["Prod\nSAP"].sum()
 fig, ax = plt.subplots()
 df_monthly.plot(kind="bar", ax=ax)
