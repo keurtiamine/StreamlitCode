@@ -50,7 +50,7 @@ image_path = "SCHEMA BOUCLE EAU VAPEUR.jpg"
 # Affichage de l'image
 st.image(image_path, caption='Image', use_column_width=True)
 # Fonction pour calculer le KPI en fonction des paramètres sélectionnés
-def calculate_kpi(param1, param2):
+def calculate_kpi(param1, param2, norm):
     # Test pour l'opération de division
     if isinstance(param1, str) or isinstance(param2, str):
         st.write("Les paramètres ne doivent pas être des chaînes de caractères")
@@ -59,7 +59,10 @@ def calculate_kpi(param1, param2):
     # Logique de calcul du KPI en utilisant les paramètres sélectionnés
     kpi_result = param1 / param2
     
-    return kpi_result
+    # Calcul de la différence avec la norme
+    diff = np.abs(kpi_result - norm)
+    
+    return kpi_result, diff
 
 # Interface utilisateur
 st.title('Calcul du KPI')
@@ -111,6 +114,9 @@ if tableau1_file is not None and tableau2_file is not None:
     # Sélection des paramètres pour le deuxième paramètre
     selected_param2 = st.selectbox('Choisir un paramètre pour le deuxième paramètre', param2_columns)
     
+    # Demande de la norme du KPI
+    norm = st.number_input("Norme du KPI", value=1.0)
+    
     # Bouton de calcul
     calculate_button = st.button('Calculer')
     
@@ -120,20 +126,26 @@ if tableau1_file is not None and tableau2_file is not None:
         param1_values = param1_values[selected_param1].tolist()
         param2_values = param2_values[selected_param2].tolist()
         
-        # Calcul du KPI
-        kpi_values = [calculate_kpi(param1, param2) for param1, param2 in zip(param1_values, param2_values)]
+        # Calcul du KPI et différence avec la norme
+        results = [calculate_kpi(param1, param2, norm) for param1, param2 in zip(param1_values, param2_values)]
+        
+        # Filtrage des résultats valides
+        valid_results = [(kpi, diff) for kpi, diff in results if kpi is not None]
+        kpi_values, diff_values = zip(*valid_results)
         
         # Affichage du tableau de résultats
         st.write('Résultats du KPI :')
-        kpi_df = pd.DataFrame({selected_param1: param1_values, selected_param2: param2_values, 'KPI': kpi_values})
+        kpi_df = pd.DataFrame({selected_param1: param1_values, selected_param2: param2_values, 'KPI': kpi_values, 'Différence': diff_values})
         st.write(kpi_df)
         
         # Affichage du graphe
         st.write('Graphe du KPI :')
         plt.figure(figsize=(10, 6))
-        plt.plot(np.arange(1, 13), kpi_values, marker='o', linestyle='-', linewidth=2, color='blue')
+        plt.plot(np.arange(1, 13), kpi_values, marker='o', linestyle='-', linewidth=2, color='blue', label='KPI')
+        plt.axhline(norm, color='red', linestyle='--', linewidth=2, label='Norme')
         plt.xlabel('Index')
         plt.ylabel('KPI')
-        plt.title('Évolution du KPI')
+        plt.title('Évolution du KPI avec la Norme')
+        plt.legend()
         plt.grid(True)
         st.pyplot(plt)
