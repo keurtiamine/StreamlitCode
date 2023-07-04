@@ -184,6 +184,38 @@ def kpi():
     st.write("Le taux de productivité de l'énergie électrique est de : ",
              taux_productivite_electrique['Taux de productivité de l\'énergie électrique'].iloc[1: 13].mean(), "%")
     st.line_chart(taux_productivite_electrique['Taux de productivité de l\'énergie électrique'][:13])
+    # Fonction pour calculer le KPI en fonction des paramètres sélectionnés
+def calculate_kpi(param1, param2):
+    # Logique de calcul du KPI en utilisant les paramètres sélectionnés
+    kpi_result = param1 * param2  # Exemple de calcul simple
+    
+    return kpi_result
 
+# Interface utilisateur
+st.title('Calcul du KPI')
+
+# Sélection des paramètres
+param1 = st.number_input('Paramètre 1', value=0.0)
+param2 = st.number_input('Paramètre 2', value=0.0)
+
+# Bouton de calcul
+calculate_button = st.button('Calculer')
+
+# Vérification si le bouton de calcul a été cliqué
+if calculate_button:
+    # Calcul du KPI
+    kpi_value = calculate_kpi(param1, param2)
+    
+    # Affichage du tableau de résultats
+    st.write('Résultats du KPI :')
+    df = pd.DataFrame({'Paramètre 1': [param1], 'Paramètre 2': [param2], 'KPI': [kpi_value]})
+    st.write(df)
+    
+    # Affichage du graphe
+    st.write('Graphe du KPI :')
+    plt.plot(df['KPI'])
+    plt.xlabel('Index')
+    plt.ylabel('KPI')
+    st.pyplot(plt)
 if production_vapeur_file is not None and energie_electrique_file is not None and tableau_previsionel_file is not None:
     kpi()
