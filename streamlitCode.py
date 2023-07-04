@@ -51,11 +51,20 @@ image_path = "SCHEMA BOUCLE EAU VAPEUR.jpg"
 st.image(image_path, caption='Image', use_column_width=True)
 
 # Fonction pour calculer le KPI en fonction des paramètres sélectionnés
-def calculate_kpi(param1, param2):
-    # Logique de calcul du KPI en utilisant les paramètres sélectionnés
-    kpi_result = param1 / param2  # Division
+def calculate_kpi(param1, param2, norm_lower, norm_upper):
+    # Test pour l'opération de division
+    if isinstance(param1, str) or isinstance(param2, str):
+        st.write("Les paramètres ne doivent pas être des chaînes de caractères")
+        return None
     
-    return kpi_result
+    # Logique de calcul du KPI en utilisant les paramètres sélectionnés
+    kpi_result = param1 / param2
+    
+    # Calcul de la différence avec les normes
+    diff_lower = np.abs(kpi_result - norm_lower)
+    diff_upper = np.abs(kpi_result - norm_upper)
+    
+    return kpi_result, diff_lower, diff_upper
 
 # Interface utilisateur
 st.title('Calcul du KPI')
@@ -107,6 +116,10 @@ if tableau1_file is not None and tableau2_file is not None:
     # Sélection des paramètres pour le deuxième paramètre
     selected_param2 = st.selectbox('Choisir un paramètre pour le deuxième paramètre', param2_columns)
     
+    # Demande de la norme inférieure et supérieure du KPI
+    norm_lower = st.number_input("Norme inférieure du KPI", value=0.0)
+    norm_upper = st.number_input("Norme supérieure du KPI", value=1.0)
+    
     # Bouton de calcul
     calculate_button = st.button('Calculer')
     
@@ -116,27 +129,42 @@ if tableau1_file is not None and tableau2_file is not None:
         param1_values = param1_values[selected_param1].tolist()
         param2_values = param2_values[selected_param2].tolist()
         
-        # Calcul du KPI
-        kpi_values = [calculate_kpi(param1, param2) if isinstance(param1, (int, float)) and isinstance(param2, (int, float)) else np.nan for param1, param2 in zip(param1_values, param2_values)]
+        # Calcul du KPI et différences avec les normes
+        results = [calculate_kpi(param1, param2, norm_lower, norm_upper) for param1, param2 in zip(param1_values, param2_values)]
+        
+        # Filtrage des résultats valides
+        valid_results = [(kpi, diff_lower, diff_upper) for kpi, diff_lower, diff_upper in results if kpi is not None]
+        kpi_values, diff_lower_values, diff_upper_values = zip(*valid_results)
         
         # Affichage du tableau de résultats
         st.write('Résultats du KPI :')
-        kpi_df = pd.DataFrame({selected_param1: param1_values, selected_param2: param2_values, 'KPI': kpi_values})
+        kpi_df = pd.DataFrame({selected_param1: param1_values, selected_param2: param2_values, 'KPI': kpi_values, 'Différence inférieure': diff_lower_values, 'Différence supérieure': diff_upper_values})
         st.write(kpi_df)
         
         # Affichage du graphe
         st.write('Graphe du KPI :')
         fig, ax = plt.subplots(figsize=(10, 6))
-        ax.plot(kpi_df['KPI'], label='KPI')
-        ax.axhline(y=norme_inf, color='r', linestyle='--', label='Norme inférieure')
-        ax.axhline(y=norme_sup, color='g', linestyle='--', label='Norme supérieure')
-        ax.legend()
+        ax.plot(np.arange(1, 13), kpi_values, marker='o', linestyle='-', linewidth=2, color='blue', label='KPI')
+        ax.axhline(norm_lower, color='red', linestyle='--', linewidth=2, label='Norme inférieure')
+        ax.axhline(norm_upper, color='green', linestyle='--', linewidth=2, label='Norme supérieure')
         ax.set_xlabel('Index')
         ax.set_ylabel('KPI')
+        ax.set_title('Évolution du KPI avec les Normes')
+        ax.legend()
+        ax.grid(True)
         st.pyplot(fig)
         
         # Bouton de téléchargement du tableau résultat
-        result_download_button = st.download_button('Télécharger le tableau résultat', data=kpi_df.to_csv(index=False), file_name='resultat.csv', mime='text/csv')
+        result_download_button = st.button('Télécharger le tableau résultat')
+        if result_download_button:
+            result_filename = 'resultat.xlsx'
+            with pd.ExcelWriter(result_filename) as writer:
+                kpi_df.to_excel(writer, index=False, sheet_name='Résultats')
+            st.write(f'Téléchargement du fichier : [{result_filename}](./{result_filename})')
         
         # Bouton de téléchargement du graphe
-        graph_download_button = st.download_button('Télécharger le graphe', data=fig, file_name='graphe.png', mime='image/png')
+        graph_download_button = st.button('Télécharger le graphe')
+        if graph_download_button:
+            graph_filename = 'graphe.png'
+            fig.savefig(graph_filename)
+            st.write(f'Téléchargement du fichier : [{graph_filename}](./{graph_filename})')
