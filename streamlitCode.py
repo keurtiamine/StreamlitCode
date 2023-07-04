@@ -7,7 +7,7 @@ def calculate_kpi(param1, param2):
     # Logique de calcul du KPI en utilisant les paramètres sélectionnés
     kpi_result = []
     for p1, p2 in zip(param1, param2):
-        if p2 != 0:
+        if isinstance(p1, (int, float)) and isinstance(p2, (int, float)) and p2 != 0:
             kpi_result.append(p1 / p2)
         else:
             kpi_result.append(None)
@@ -65,10 +65,10 @@ if tableau1_file is not None and tableau2_file is not None:
     param1_columns = selected_tableau1.columns.tolist()
     param2_columns = selected_tableau2.columns.tolist()
     
-    # Sélection des paramètres pour le premier paramètre
+    # Sélection du paramètre pour le premier paramètre
     selected_param1 = st.selectbox('Choisir un paramètre pour le premier paramètre', param1_columns)
     
-    # Sélection des paramètres pour le deuxième paramètre
+    # Sélection du paramètre pour le deuxième paramètre
     selected_param2 = st.selectbox('Choisir un paramètre pour le deuxième paramètre', param2_columns)
     
     # Bouton de calcul
