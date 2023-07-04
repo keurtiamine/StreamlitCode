@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+from sympy import symbols, parse_expr
 
 st.set_page_config(layout="wide")
 st.markdown(
@@ -50,28 +51,19 @@ image_path = "SCHEMA BOUCLE EAU VAPEUR.jpg"
 # Affichage de l'image
 st.image(image_path, caption='Image', use_column_width=True)
 
-# Liste des formules de calcul du KPI disponibles
-kpi_formulas = {
-    'Formule 1': lambda param1, param2: param1 / param2,
-    'Formule 2': lambda param1, param2: (param1 + param2) / 2,
-    'Formule 3': lambda param1, param2: param1 * param2,
-    # Ajoutez d'autres formules de calcul ici
-}
 
-# Fonction pour calculer le KPI en fonction des paramètres sélectionnés et de la formule choisie
-def calculate_kpi(param1, param2, formula, norm_lower, norm_upper):
-    # Test pour l'opération de division
-    if isinstance(param1, str) or isinstance(param2, str):
-        st.write("Les paramètres ne doivent pas être des chaînes de caractères")
-        return None
+# Fonction pour calculer le KPI en fonction de l'expression mathématique saisie
+def calculate_kpi(param1, param2, expression, norm_lower, norm_upper):
+    # Convertir l'expression en une fonction utilisable
+    x, y = symbols('x y')
+    f = parse_expr(expression)
     
-    # Vérification si la formule choisie est valide
-    if formula not in kpi_formulas:
-        st.write("La formule choisie n'est pas valide")
+    # Calcul du KPI en utilisant l'expression saisie
+    try:
+        kpi_result = f.subs({x: param1, y: param2})
+    except Exception as e:
+        st.write("Erreur de calcul du KPI :", str(e))
         return None
-    
-    # Appel de la fonction de calcul de la formule choisie
-    kpi_result = kpi_formulas[formula](param1, param2)
     
     # Calcul de la différence avec les normes
     diff_lower = np.abs(kpi_result - norm_lower)
@@ -129,8 +121,8 @@ if tableau1_file is not None and tableau2_file is not None:
     # Sélection des paramètres pour le deuxième paramètre
     selected_param2 = st.selectbox('Choisir un paramètre pour le deuxième paramètre', param2_columns)
     
-    # Sélection de la formule du KPI
-    selected_formula = st.selectbox('Choisir une formule pour le KPI', list(kpi_formulas.keys()))
+    # Demande de l'expression mathématique pour le calcul du KPI
+    expression = st.text_input("Expression mathématique pour le calcul du KPI")
     
     # Demande de la norme inférieure et supérieure du KPI
     norm_lower = st.number_input("Norme inférieure du KPI", value=0.0)
@@ -146,7 +138,7 @@ if tableau1_file is not None and tableau2_file is not None:
         param2_values = param2_values[selected_param2].tolist()
         
         # Calcul du KPI et différences avec les normes
-        results = [calculate_kpi(param1, param2, selected_formula, norm_lower, norm_upper) for param1, param2 in zip(param1_values, param2_values)]
+        results = [calculate_kpi(param1, param2, expression, norm_lower, norm_upper) for param1, param2 in zip(param1_values, param2_values)]
         
         # Filtrage des résultats valides
         valid_results = [(kpi, diff_lower, diff_upper) for kpi, diff_lower, diff_upper in results if kpi is not None]
