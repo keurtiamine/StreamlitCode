@@ -5,8 +5,12 @@ import matplotlib.pyplot as plt
 # Fonction pour calculer le KPI en fonction des paramètres sélectionnés
 def calculate_kpi(param1, param2):
     # Logique de calcul du KPI en utilisant les paramètres sélectionnés
-    kpi_result = param1 * param2  # Exemple de calcul simple
-    
+    kpi_result = []
+    for p1, p2 in zip(param1, param2):
+        if p2 != 0:
+            kpi_result.append(p1 / p2)
+        else:
+            kpi_result.append(None)
     return kpi_result
 
 # Interface utilisateur
@@ -45,13 +49,21 @@ if tableau1_file is not None and tableau2_file is not None:
     st.write('Tableau sélectionné pour le deuxième paramètre :')
     st.write(selected_tableau2)
     
-    # Récupération des lignes 1 à 12 des deux tableaux pour les paramètres
-    param1_values = selected_tableau1.iloc[0:12, :]
-    param2_values = selected_tableau2.iloc[0:12, :]
+    # Récupération des lignes non vides des deux tableaux pour les paramètres
+    param1_values = selected_tableau1.iloc[:, :].values.flatten().tolist()
+    param2_values = selected_tableau2.iloc[:, :].values.flatten().tolist()
+    
+    # Filtrage des lignes vides
+    param1_values = [param for param in param1_values if pd.notnull(param)]
+    param2_values = [param for param in param2_values if pd.notnull(param)]
+    
+    # Sélection des 12 premières valeurs des paramètres
+    param1_values = param1_values[:12]
+    param2_values = param2_values[:12]
     
     # Sélection des colonnes (paramètres) pour chaque tableau
-    param1_columns = param1_values.columns.tolist()
-    param2_columns = param2_values.columns.tolist()
+    param1_columns = selected_tableau1.columns.tolist()
+    param2_columns = selected_tableau2.columns.tolist()
     
     # Sélection des paramètres pour le premier paramètre
     selected_param1 = st.selectbox('Choisir un paramètre pour le premier paramètre', param1_columns)
@@ -64,21 +76,17 @@ if tableau1_file is not None and tableau2_file is not None:
     
     # Vérification si le bouton de calcul a été cliqué
     if calculate_button:
-        # Récupération des valeurs des paramètres sélectionnés
-        param1_values = param1_values[selected_param1].tolist()
-        param2_values = param2_values[selected_param2].tolist()
-        
         # Calcul du KPI
-        kpi_values = [calculate_kpi(param1, param2) for param1, param2 in zip(param1_values, param2_values)]
+        kpi_values = calculate_kpi(param1_values, param2_values)
         
         # Affichage du tableau de résultats
         st.write('Résultats du KPI :')
-        kpi_df = pd.DataFrame({selected_param1: param1_values, selected_param2: param2_values, 'KPI': kpi_values})
-        st.write(kpi_df)
+        result_df = pd.DataFrame({selected_param1: param1_values, selected_param2: param2_values, 'KPI': kpi_values})
+        st.write(result_df.dropna())  # Affichage des lignes non vides uniquement
         
         # Affichage du graphe
         st.write('Graphe du KPI :')
-        plt.plot(kpi_df['KPI'])
+        plt.plot(result_df.dropna()['KPI'])
         plt.xlabel('Index')
         plt.ylabel('KPI')
         st.pyplot(plt)
