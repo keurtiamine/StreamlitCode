@@ -194,28 +194,64 @@ def calculate_kpi(param1, param2):
 # Interface utilisateur
 st.title('Calcul du KPI')
 
-# Sélection des paramètres
-param1 = st.number_input('Paramètre 1', value=0.0)
-param2 = st.number_input('Paramètre 2', value=0.0)
+# Liste des tableaux disponibles avec leurs paramètres
+tableau1_params = ['Paramètre 1', 'Paramètre 2', 'Paramètre 3']
+tableau2_params = ['Paramètre A', 'Paramètre B', 'Paramètre C']
+
+# Sélection du tableau
+tableau_choice = st.selectbox('Choisir un tableau', ['Tableau 1', 'Tableau 2'])
+
+# Sélection des paramètres en fonction du tableau choisi
+if tableau_choice == 'Tableau 1':
+    params = st.multiselect('Choisir les paramètres', tableau1_params)
+else:
+    params = st.multiselect('Choisir les paramètres', tableau2_params)
 
 # Bouton de calcul
 calculate_button = st.button('Calculer')
 
 # Vérification si le bouton de calcul a été cliqué
 if calculate_button:
-    # Calcul du KPI
-    kpi_value = calculate_kpi(param1, param2)
+    if tableau_choice == 'Tableau 1':
+        # Récupération des valeurs des paramètres pour le tableau 1
+        param1 = st.number_input(tableau1_params[0], value=0.0)
+        param2 = st.number_input(tableau1_params[1], value=0.0)
+        param3 = st.number_input(tableau1_params[2], value=0.0)
+        
+        # Calcul du KPI
+        kpi_value = calculate_kpi(param1, param2)
+        
+        # Affichage du tableau de résultats
+        st.write('Résultats du KPI :')
+        df = pd.DataFrame({'Paramètre 1': [param1], 'Paramètre 2': [param2], 'KPI': [kpi_value]})
+        st.write(df)
+        
+        # Affichage du graphe
+        st.write('Graphe du KPI :')
+        plt.plot(df['KPI'])
+        plt.xlabel('Index')
+        plt.ylabel('KPI')
+        st.pyplot(plt)
     
-    # Affichage du tableau de résultats
-    st.write('Résultats du KPI :')
-    df = pd.DataFrame({'Paramètre 1': [param1], 'Paramètre 2': [param2], 'KPI': [kpi_value]})
-    st.write(df)
-    
-    # Affichage du graphe
-    st.write('Graphe du KPI :')
-    plt.plot(df['KPI'])
-    plt.xlabel('Index')
-    plt.ylabel('KPI')
-    st.pyplot(plt)
+    else:  # Cas du tableau 2
+        # Récupération des valeurs des paramètres pour le tableau 2
+        paramA = st.number_input(tableau2_params[0], value=0.0)
+        paramB = st.number_input(tableau2_params[1], value=0.0)
+        paramC = st.number_input(tableau2_params[2], value=0.0)
+        
+        # Calcul du KPI
+        kpi_value = calculate_kpi(paramA, paramB)
+        
+        # Affichage du tableau de résultats
+        st.write('Résultats du KPI :')
+        df = pd.DataFrame({'Paramètre A': [paramA], 'Paramètre B': [paramB], 'KPI': [kpi_value]})
+        st.write(df)
+        
+        # Affichage du graphe
+        st.write('Graphe du KPI :')
+        plt.plot(df['KPI'])
+        plt.xlabel('Index')
+        plt.ylabel('KPI')
+        st.pyplot(plt)
 if production_vapeur_file is not None and energie_electrique_file is not None and tableau_previsionel_file is not None:
     kpi()
