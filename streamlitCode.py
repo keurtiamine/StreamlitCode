@@ -148,6 +148,9 @@ if tableau1_file is not None and tableau2_file is not None:
         st.write('Résultats du KPI :')
         kpi_df = pd.DataFrame({selected_param1: param1_values, selected_param2: param2_values, 'KPI': kpi_values, 'Différence inférieure': diff_lower_values, 'Différence supérieure': diff_upper_values})
         st.write(kpi_df)
+        output_excel = kpi_df.to_excel(index=False)
+        st.markdown(f"### [Télécharger le tableau résultat (Excel)](data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{output_excel})")
+
         
         # Affichage du graphe
         st.write('Graphe du KPI :')
