@@ -67,3 +67,4 @@ if tableau1_file is not None and tableau2_file is not None:
         plt.xlabel('Index')
         plt.ylabel('KPI')
         st.pyplot(plt)
+
