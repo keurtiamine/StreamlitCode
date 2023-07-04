@@ -2,6 +2,42 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
+st.set_page_config(layout="wide")
+st.markdown(
+    """
+    <style>
+   
+    body {
+        background-color: coral; /* Replace #f0f0f0 with your desired background color */
+    }
+    
+    /* Modifier la police et la taille du titre */
+    .title {
+        font-family: 'Arial', sans-serif;
+        font-size: 32px;
+        color: #333333;
+    }
+
+    /* Modifier la taille des en-têtes de tableau */
+    .dataframe th {
+        font-size: 16px;
+        background-color: #f5f5f5;
+    }
+
+    /* Modifier l'arrière-plan du tableau */
+    .dataframe {
+        background-color: #ffffff;
+    }
+
+    /* Ajouter de la marge autour du tableau */
+    .dataframe {
+        margin: 20px auto;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 st.markdown("<h1 style='text-align: center;'>Interface graphique PMP</h1>", unsafe_allow_html=True)
 
 
