@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import io
 from sympy import symbols, parse_expr
 
 st.set_page_config(layout="wide")
