@@ -25,21 +25,39 @@ if tableau1_file is not None and tableau2_file is not None:
     # Liste des tableaux disponibles avec leurs noms
     tableaux = {'Tableau 1': tableau1, 'Tableau 2': tableau2}
     
-    # Sélection du tableau
-    tableau_choice = st.selectbox('Choisir un tableau', list(tableaux.keys()))
+    # Sélection du tableau pour le premier paramètre
+    tableau1_choice = st.selectbox('Choisir un tableau pour le premier paramètre', list(tableaux.keys()))
     
-    # Récupération du tableau sélectionné
-    selected_tableau = tableaux[tableau_choice]
+    # Récupération du tableau sélectionné pour le premier paramètre
+    selected_tableau1 = tableaux[tableau1_choice]
     
-    # Affichage du tableau
-    st.write('Tableau sélectionné :')
-    st.write(selected_tableau)
+    # Affichage du tableau pour le premier paramètre
+    st.write('Tableau sélectionné pour le premier paramètre :')
+    st.write(selected_tableau1)
     
-    # Récupération des noms des colonnes (paramètres) du tableau sélectionné
-    params = selected_tableau.columns.tolist()
+    # Sélection du tableau pour le deuxième paramètre
+    tableau2_choice = st.selectbox('Choisir un tableau pour le deuxième paramètre', list(tableaux.keys()))
     
-    # Sélection des paramètres
-    selected_params = st.multiselect('Choisir les paramètres', params)
+    # Récupération du tableau sélectionné pour le deuxième paramètre
+    selected_tableau2 = tableaux[tableau2_choice]
+    
+    # Affichage du tableau pour le deuxième paramètre
+    st.write('Tableau sélectionné pour le deuxième paramètre :')
+    st.write(selected_tableau2)
+    
+    # Récupération des lignes 1 à 12 des deux tableaux pour les paramètres
+    param1_values = selected_tableau1.iloc[0:12, :]
+    param2_values = selected_tableau2.iloc[0:12, :]
+    
+    # Sélection des colonnes (paramètres) pour chaque tableau
+    param1_columns = param1_values.columns.tolist()
+    param2_columns = param2_values.columns.tolist()
+    
+    # Sélection des paramètres pour le premier paramètre
+    selected_param1 = st.selectbox('Choisir un paramètre pour le premier paramètre', param1_columns)
+    
+    # Sélection des paramètres pour le deuxième paramètre
+    selected_param2 = st.selectbox('Choisir un paramètre pour le deuxième paramètre', param2_columns)
     
     # Bouton de calcul
     calculate_button = st.button('Calculer')
@@ -47,18 +65,15 @@ if tableau1_file is not None and tableau2_file is not None:
     # Vérification si le bouton de calcul a été cliqué
     if calculate_button:
         # Récupération des valeurs des paramètres sélectionnés
-        param_values = []
-        for param in selected_params:
-            param_value = st.number_input(param, value=0.0)
-            param_values.append(param_value)
+        param1_values = param1_values[selected_param1].tolist()
+        param2_values = param2_values[selected_param2].tolist()
         
         # Calcul du KPI
-        kpi_value = calculate_kpi(*param_values)
+        kpi_values = [calculate_kpi(param1, param2) for param1, param2 in zip(param1_values, param2_values)]
         
         # Affichage du tableau de résultats
         st.write('Résultats du KPI :')
-        kpi_df = pd.DataFrame({param: [value] for param, value in zip(selected_params, param_values)})
-        kpi_df['KPI'] = kpi_value
+        kpi_df = pd.DataFrame({selected_param1: param1_values, selected_param2: param2_values, 'KPI': kpi_values})
         st.write(kpi_df)
         
         # Affichage du graphe
