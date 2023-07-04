@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 st.set_page_config(layout="wide")
 st.markdown(
@@ -129,8 +130,10 @@ if tableau1_file is not None and tableau2_file is not None:
         
         # Affichage du graphe
         st.write('Graphe du KPI :')
-        plt.plot(kpi_df['KPI'])
+        plt.figure(figsize=(10, 6))
+        plt.plot(np.arange(1, 13), kpi_values, marker='o', linestyle='-', linewidth=2, color='blue')
         plt.xlabel('Index')
         plt.ylabel('KPI')
+        plt.title('Évolution du KPI')
+        plt.grid(True)
         st.pyplot(plt)
-
