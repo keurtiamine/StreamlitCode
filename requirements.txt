@@ -4,4 +4,3 @@ numpy
 pdf2image
 scikit-learn
 sympy
-io
