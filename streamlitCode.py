@@ -50,16 +50,12 @@ if tableau1_file is not None and tableau2_file is not None:
     st.write(selected_tableau2)
     
     # Récupération des lignes non vides des deux tableaux pour les paramètres
-    param1_values = selected_tableau1.iloc[:, :].values.flatten().tolist()
-    param2_values = selected_tableau2.iloc[:, :].values.flatten().tolist()
+    param1_values = selected_tableau1.iloc[1:13, :].values.flatten().tolist()
+    param2_values = selected_tableau2.iloc[1:13, :].values.flatten().tolist()
     
-    # Filtrage des lignes vides
-    param1_values = [param for param in param1_values if pd.notnull(param)]
-    param2_values = [param for param in param2_values if pd.notnull(param)]
-    
-    # Sélection des 12 premières valeurs des paramètres
-    param1_values = param1_values[:12]
-    param2_values = param2_values[:12]
+    # Filtrage des lignes vides et conversion en valeurs numériques
+    param1_values = [float(param) if isinstance(param, (int, float)) else None for param in param1_values]
+    param2_values = [float(param) if isinstance(param, (int, float)) else None for param in param2_values]
     
     # Sélection des colonnes (paramètres) pour chaque tableau
     param1_columns = selected_tableau1.columns.tolist()
