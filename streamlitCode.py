@@ -154,17 +154,3 @@ if tableau1_file is not None and tableau2_file is not None:
         ax.grid(True)
         st.pyplot(fig)
         
-        # Bouton de téléchargement du tableau résultat
-        result_download_button = st.button('Télécharger le tableau résultat')
-        if result_download_button:
-            result_filename = 'resultat.xlsx'
-            with pd.ExcelWriter(result_filename) as writer:
-                kpi_df.to_excel(writer, index=False, sheet_name='Résultats')
-            st.write(f'Téléchargement du fichier : [{result_filename}](./{result_filename})')
-        
-        # Bouton de téléchargement du graphe
-        graph_download_button = st.button('Télécharger le graphe')
-        if graph_download_button:
-            graph_filename = 'graphe.png'
-            fig.savefig(graph_filename)
-            st.write(f'Téléchargement du fichier : [{graph_filename}](./{graph_filename})')
