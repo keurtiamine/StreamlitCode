@@ -51,18 +51,18 @@ image_path = "SCHEMA BOUCLE EAU VAPEUR.jpg"
 # Affichage de l'image
 st.image(image_path, caption='Image', use_column_width=True)
 
-
-# Fonction pour calculer le KPI en fonction de l'expression mathématique saisie
+# Fonction pour calculer le KPI en fonction de l'expression mathématique personnalisée
 def calculate_kpi(param1, param2, expression, norm_lower, norm_upper):
-    # Convertir l'expression en une fonction utilisable
-    x, y = symbols('x y')
-    f = parse_expr(expression)
+    # Test pour l'opération de division
+    if isinstance(param1, str) or isinstance(param2, str):
+        st.write("Les paramètres ne doivent pas être des chaînes de caractères")
+        return None
     
-    # Calcul du KPI en utilisant l'expression saisie
+    # Évaluation de l'expression mathématique avec les valeurs des paramètres
     try:
-        kpi_result = f.subs({x: param1, y: param2})
+        kpi_result = eval(expression)
     except Exception as e:
-        st.write("Erreur de calcul du KPI :", str(e))
+        st.write("Erreur lors de l'évaluation de l'expression mathématique :", str(e))
         return None
     
     # Calcul de la différence avec les normes
@@ -121,12 +121,12 @@ if tableau1_file is not None and tableau2_file is not None:
     # Sélection des paramètres pour le deuxième paramètre
     selected_param2 = st.selectbox('Choisir un paramètre pour le deuxième paramètre', param2_columns)
     
-    # Demande de l'expression mathématique pour le calcul du KPI
-    expression = st.text_input("Expression mathématique pour le calcul du KPI")
-    
     # Demande de la norme inférieure et supérieure du KPI
     norm_lower = st.number_input("Norme inférieure du KPI", value=0.0)
     norm_upper = st.number_input("Norme supérieure du KPI", value=1.0)
+    
+    # Champ pour saisir l'expression mathématique personnalisée
+    expression = st.text_input("Expression mathématique pour le calcul du KPI", "param1 / param2")
     
     # Bouton de calcul
     calculate_button = st.button('Calculer')
@@ -137,7 +137,7 @@ if tableau1_file is not None and tableau2_file is not None:
         param1_values = param1_values[selected_param1].tolist()
         param2_values = param2_values[selected_param2].tolist()
         
-        # Calcul du KPI et différences avec les normes
+        # Calcul du KPI et différences avec les normes en utilisant l'expression mathématique personnalisée
         results = [calculate_kpi(param1, param2, expression, norm_lower, norm_upper) for param1, param2 in zip(param1_values, param2_values)]
         
         # Filtrage des résultats valides
