@@ -12,15 +12,15 @@ def calculate_kpi(param1, param2):
 # Interface utilisateur
 st.title('Calcul du KPI')
 
-# Chargement des tableaux à partir des fichiers CSV
-tableau1_file = st.file_uploader('Charger le tableau 1 (CSV)', type='csv')
-tableau2_file = st.file_uploader('Charger le tableau 2 (CSV)', type='csv')
+# Chargement des tableaux à partir des fichiers Excel
+tableau1_file = st.file_uploader('Charger le tableau 1 (Excel)', type='xlsx')
+tableau2_file = st.file_uploader('Charger le tableau 2 (Excel)', type='xlsx')
 
 # Vérification si les fichiers ont été chargés
 if tableau1_file is not None and tableau2_file is not None:
-    # Lecture des fichiers CSV pour créer les tableaux de données
-    tableau1 = pd.read_csv(tableau1_file)
-    tableau2 = pd.read_csv(tableau2_file)
+    # Lecture des fichiers Excel pour créer les tableaux de données
+    tableau1 = pd.read_excel(tableau1_file)
+    tableau2 = pd.read_excel(tableau2_file)
     
     # Liste des tableaux disponibles avec leurs noms
     tableaux = {'Tableau 1': tableau1, 'Tableau 2': tableau2}
@@ -67,4 +67,3 @@ if tableau1_file is not None and tableau2_file is not None:
         plt.xlabel('Index')
         plt.ylabel('KPI')
         st.pyplot(plt)
-
