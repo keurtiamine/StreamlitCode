@@ -2,6 +2,16 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
+st.markdown("<h1 style='text-align: center;'>Interface graphique PMP</h1>", unsafe_allow_html=True)
+
+
+st.title("Affichage intégral de la boucle eau-vapeur")
+
+# Chemin vers l'image
+image_path = "SCHEMA BOUCLE EAU VAPEUR.jpg"
+
+# Affichage de l'image
+st.image(image_path, caption='Image', use_column_width=True)
 # Fonction pour calculer le KPI en fonction des paramètres sélectionnés
 def calculate_kpi(param1, param2):
     # Test pour l'opération de division
