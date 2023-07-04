@@ -3,3 +3,5 @@ matplotlib
 numpy
 pdf2image
 scikit-learn
+symbols
+parse_expr
