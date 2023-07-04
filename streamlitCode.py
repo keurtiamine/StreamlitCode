@@ -49,10 +49,6 @@ image_path = "SCHEMA BOUCLE EAU VAPEUR.jpg"
 
 # Affichage de l'image
 st.image(image_path, caption='Image', use_column_width=True)
-import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
 
 # Fonction pour calculer le KPI en fonction des paramètres sélectionnés
 def calculate_kpi(param1, param2, norm_lower, norm_upper):
@@ -147,14 +143,28 @@ if tableau1_file is not None and tableau2_file is not None:
         
         # Affichage du graphe
         st.write('Graphe du KPI :')
-        plt.figure(figsize=(10, 6))
-        plt.plot(np.arange(1, 13), kpi_values, marker='o', linestyle='-', linewidth=2, color='blue', label='KPI')
-        plt.axhline(norm_lower, color='red', linestyle='--', linewidth=2, label='Norme inférieure')
-        plt.axhline(norm_upper, color='green', linestyle='--', linewidth=2, label='Norme supérieure')
-        plt.xlabel('Index')
-        plt.ylabel('KPI')
-        plt.title('Évolution du KPI avec les Normes')
-        plt.legend()
-        plt.grid(True)
-        st.pyplot(plt)
-
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.plot(np.arange(1, 13), kpi_values, marker='o', linestyle='-', linewidth=2, color='blue', label='KPI')
+        ax.axhline(norm_lower, color='red', linestyle='--', linewidth=2, label='Norme inférieure')
+        ax.axhline(norm_upper, color='green', linestyle='--', linewidth=2, label='Norme supérieure')
+        ax.set_xlabel('Index')
+        ax.set_ylabel('KPI')
+        ax.set_title('Évolution du KPI avec les Normes')
+        ax.legend()
+        ax.grid(True)
+        st.pyplot(fig)
+        
+        # Bouton de téléchargement du tableau résultat
+        result_download_button = st.button('Télécharger le tableau résultat')
+        if result_download_button:
+            result_filename = 'resultat.xlsx'
+            with pd.ExcelWriter(result_filename) as writer:
+                kpi_df.to_excel(writer, index=False, sheet_name='Résultats')
+            st.write(f'Téléchargement du fichier : [{result_filename}](./{result_filename})')
+        
+        # Bouton de téléchargement du graphe
+        graph_download_button = st.button('Télécharger le graphe')
+        if graph_download_button:
+            graph_filename = 'graphe.png'
+            fig.savefig(graph_filename)
+            st.write(f'Téléchargement du fichier : [{graph_filename}](./{graph_filename})')
