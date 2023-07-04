@@ -4,3 +4,4 @@ numpy
 pdf2image
 scikit-learn
 sympy
+plotly.graph_objects
