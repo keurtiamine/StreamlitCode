@@ -51,18 +51,18 @@ image_path = "SCHEMA BOUCLE EAU VAPEUR.jpg"
 # Affichage de l'image
 st.image(image_path, caption='Image', use_column_width=True)
 
-# Fonction pour calculer le KPI en fonction de l'expression mathématique personnalisée
-def calculate_kpi(param1, param2, expression, norm_lower, norm_upper):
+# Fonction pour calculer le KPI en fonction de l'expression mathématique et des paramètres sélectionnés
+def calculate_kpi(expression, param1, param2, norm_lower, norm_upper):
     # Test pour l'opération de division
     if isinstance(param1, str) or isinstance(param2, str):
         st.write("Les paramètres ne doivent pas être des chaînes de caractères")
         return None
     
-    # Évaluation de l'expression mathématique avec les valeurs des paramètres
+    # Évaluation de l'expression mathématique avec les paramètres sélectionnés
     try:
-        kpi_result = eval(expression)
-    except Exception as e:
-        st.write("Erreur lors de l'évaluation de l'expression mathématique :", str(e))
+        kpi_result = eval(expression, {'param1': param1, 'param2': param2})
+    except (SyntaxError, NameError, ZeroDivisionError):
+        st.write("Expression mathématique invalide ou erreur de calcul")
         return None
     
     # Calcul de la différence avec les normes
@@ -121,12 +121,12 @@ if tableau1_file is not None and tableau2_file is not None:
     # Sélection des paramètres pour le deuxième paramètre
     selected_param2 = st.selectbox('Choisir un paramètre pour le deuxième paramètre', param2_columns)
     
+    # Demande de l'expression mathématique du KPI
+    expression = st.text_input("Expression mathématique du KPI (utilisez param1 et param2)", value="param1 / param2")
+    
     # Demande de la norme inférieure et supérieure du KPI
     norm_lower = st.number_input("Norme inférieure du KPI", value=0.0)
     norm_upper = st.number_input("Norme supérieure du KPI", value=1.0)
-    
-    # Champ pour saisir l'expression mathématique personnalisée
-    expression = st.text_input("Expression mathématique pour le calcul du KPI", "param1 / param2")
     
     # Bouton de calcul
     calculate_button = st.button('Calculer')
@@ -137,8 +137,8 @@ if tableau1_file is not None and tableau2_file is not None:
         param1_values = param1_values[selected_param1].tolist()
         param2_values = param2_values[selected_param2].tolist()
         
-        # Calcul du KPI et différences avec les normes en utilisant l'expression mathématique personnalisée
-        results = [calculate_kpi(param1, param2, expression, norm_lower, norm_upper) for param1, param2 in zip(param1_values, param2_values)]
+        # Calcul du KPI et différences avec les normes
+        results = [calculate_kpi(expression, param1, param2, norm_lower, norm_upper) for param1, param2 in zip(param1_values, param2_values)]
         
         # Filtrage des résultats valides
         valid_results = [(kpi, diff_lower, diff_upper) for kpi, diff_lower, diff_upper in results if kpi is not None]
@@ -161,3 +161,9 @@ if tableau1_file is not None and tableau2_file is not None:
         ax.legend()
         ax.grid(True)
         st.pyplot(fig)
+        
+        # Demande à l'utilisateur s'il souhaite effectuer un nouveau calcul
+        new_calculation = st.button("Nouveau calcul")
+        
+        if not new_calculation:
+            st.write("Fin du programme")
