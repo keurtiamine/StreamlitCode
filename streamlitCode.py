@@ -55,7 +55,7 @@ st.image(image_path, caption='Image', use_column_width=True)
 def calculate_kpi(expression, param1, param2, norm_lower, norm_upper):
     # Test pour l'opération de division
     if isinstance(param1, str) or isinstance(param2, str):
-        st.write("Les paramètres ne doivent pas être des chaînes de caractères")
+        st.write("Les paramètres ne doivent pas être des chaînes de caractère")
         return None
     
     # Évaluation de l'expression mathématique avec les paramètres sélectionnés
