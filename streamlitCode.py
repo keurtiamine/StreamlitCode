@@ -72,8 +72,7 @@ def calculate_kpi(expression, param1, param2, norm_lower, norm_upper):
     
     return kpi_result, diff_lower, diff_upper
 def calculEtAffichage(param1_values,param2_values):
-    param1_values = param1_values[selected_param1].tolist()
-    param2_values = param2_values[selected_param2].tolist()
+
 
     # Calcul du KPI et différences avec les normes
     results = [calculate_kpi(expression, param1, param2, norm_lower, norm_upper) for param1, param2 in
@@ -178,10 +177,9 @@ if tableau1_file is not None and tableau2_file is not None:
         st.session_state['calculate_clicked'] = calculate_clicked
 
         # Récupération des valeurs des paramètres sélectionnés
-        st.write("selcted params :",selected_param1)
-        st.write("param1_values : ",param1_values[selected_param1].tolist())
         param1_values = param1_values[selected_param1].tolist()
         param2_values = param2_values[selected_param2].tolist()
+
         calculEtAffichage(param1_values,param2_values)
         
         # Demande à l'utilisateur s'il souhaite effectuer un nouveau calcul
