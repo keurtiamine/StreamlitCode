@@ -5,7 +5,7 @@ import numpy as np
 from sympy import symbols, parse_expr
 import xlwings as xw
 from openpyxl import load_workbook
-
+import pywin32
 
 st.set_page_config(layout="wide")
 st.markdown(

@@ -5,3 +5,4 @@ pdf2image
 scikit-learn
 sympy
 xlwings
+pywin32
