@@ -117,7 +117,7 @@ def calculEtAffichage(param1_values,param2_values):
 
 # Interface utilisateur
 st.title('Calcul du KPI')
-excel_file = st.file_uploader("Upload Excel file", type=["xlsx"])
+excel_file = st.file_uploader("Upload Excel file", type=["xlsm", "xlsx"])
 if excel_file is not None:
     df = pd.read_excel(excel_file, engine='openpyxl')
 
