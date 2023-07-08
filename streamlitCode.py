@@ -179,7 +179,7 @@ if tableau1_file is not None and tableau2_file is not None:
 
         # Récupération des valeurs des paramètres sélectionnés
         st.write("selcted params :",selected_param1)
-        st.write("param1_values : ",param1_values)
+        st.write("param1_values : ",param1_values[selected_param1].tolist())
         param1_values = param1_values[selected_param1].tolist()
         param2_values = param2_values[selected_param2].tolist()
         calculEtAffichage(param1_values,param2_values)
