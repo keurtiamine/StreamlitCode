@@ -131,7 +131,7 @@ st.title('Calcul du KPI')
 excel_file = st.file_uploader("Upload Excel file", type=["xlsm", "xlsx"])
 
 if excel_file is not None:
-    modify_cell(excel_file, 'Feuil1', 'C4', 5)
+    modify_cell(excel_file, 'C4', 5)
     df = pd.read_excel(excel_file, engine='openpyxl')
 
     # Display the DataFrame
