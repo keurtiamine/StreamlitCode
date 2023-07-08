@@ -71,6 +71,46 @@ def calculate_kpi(expression, param1, param2, norm_lower, norm_upper):
     diff_upper = np.abs(kpi_result - norm_upper)
     
     return kpi_result, diff_lower, diff_upper
+def calculEtAffichage(param1_values,param2_values):
+    param1_values = param1_values[selected_param1].tolist()
+    param2_values = param2_values[selected_param2].tolist()
+
+    # Calcul du KPI et différences avec les normes
+    results = [calculate_kpi(expression, param1, param2, norm_lower, norm_upper) for param1, param2 in
+               zip(param1_values, param2_values)]
+
+    # Filtrage des résultats valides
+    valid_results = [(kpi, diff_lower, diff_upper) for kpi, diff_lower, diff_upper in results if kpi is not None]
+    kpi_values, diff_lower_values, diff_upper_values = zip(*valid_results)
+
+    # Affichage du tableau de résultats
+    var = st.write('Résultats du KPI :')
+    kpi_df = pd.DataFrame({selected_param1: param1_values, selected_param2: param2_values, 'KPI': kpi_values,
+                           'Différence inférieure': diff_lower_values, 'Différence supérieure': diff_upper_values})
+    st.write(kpi_df)
+    excel = kpi_df.to_excel("kpi.xlsx")
+    with open('kpi.xlsx', 'rb') as f:
+        st.download_button('Download', f, file_name='kpi.xlsx')
+
+    # Affichage du graphe
+    st.write('Graphe du KPI :')
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(np.arange(1, 13), kpi_values, marker='o', linestyle='-', linewidth=2, color='blue', label='KPI')
+    ax.axhline(norm_lower, color='red', linestyle='--', linewidth=2, label='Norme inférieure')
+    ax.axhline(norm_upper, color='green', linestyle='--', linewidth=2, label='Norme supérieure')
+    ax.set_xlabel('Index')
+    ax.set_ylabel('KPI')
+    ax.set_title('Évolution du KPI avec les Normes')
+    ax.legend()
+    ax.grid(True)
+    st.pyplot(fig)
+
+    recalculate_button = st.button("Calculer pour d'autre param")
+    if recalculate_button:
+        st.session_state['calculate_clicked'] = False
+        st.experimental_rerun()
+
+    # Demande à l'utilisateur s'il souhaite effectuer un nouveau calcul
 
 # Interface utilisateur
 st.title('Calcul du KPI')
@@ -140,37 +180,8 @@ if tableau1_file is not None and tableau2_file is not None:
         # Récupération des valeurs des paramètres sélectionnés
         param1_values = param1_values[selected_param1].tolist()
         param2_values = param2_values[selected_param2].tolist()
-        
-        # Calcul du KPI et différences avec les normes
-        results = [calculate_kpi(expression, param1, param2, norm_lower, norm_upper) for param1, param2 in zip(param1_values, param2_values)]
-        
-        # Filtrage des résultats valides
-        valid_results = [(kpi, diff_lower, diff_upper) for kpi, diff_lower, diff_upper in results if kpi is not None]
-        kpi_values, diff_lower_values, diff_upper_values = zip(*valid_results)
-        
-        # Affichage du tableau de résultats
-        var  = st.write('Résultats du KPI :')
-        kpi_df = pd.DataFrame({selected_param1: param1_values, selected_param2: param2_values, 'KPI': kpi_values, 'Différence inférieure': diff_lower_values, 'Différence supérieure': diff_upper_values})
-        st.write(kpi_df)
-        excel =  kpi_df.to_excel("kpi.xlsx")
-        with open('kpi.xlsx', 'rb') as f:
-            st.download_button('Download', f, file_name='kpi.xlsx')
-        
-        # Affichage du graphe
-        st.write('Graphe du KPI :')
-        fig, ax = plt.subplots(figsize=(10, 6))
-        ax.plot(np.arange(1, 13), kpi_values, marker='o', linestyle='-', linewidth=2, color='blue', label='KPI')
-        ax.axhline(norm_lower, color='red', linestyle='--', linewidth=2, label='Norme inférieure')
-        ax.axhline(norm_upper, color='green', linestyle='--', linewidth=2, label='Norme supérieure')
-        ax.set_xlabel('Index')
-        ax.set_ylabel('KPI')
-        ax.set_title('Évolution du KPI avec les Normes')
-        ax.legend()
-        ax.grid(True)
-        st.pyplot(fig)
+        calculEtAffichage(param1_values,param2_values)
         
         # Demande à l'utilisateur s'il souhaite effectuer un nouveau calcul
-    new_calculation = st.button("Nouveau calcul")
-        
-    if not new_calculation:
-        st.write("Fin du programme")
+
+
