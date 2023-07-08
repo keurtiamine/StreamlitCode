@@ -132,8 +132,9 @@ def modify_cell(file_path, sheet_name, cell, value):
 # Interface utilisateur
 st.title('Calcul du KPI')
 excel_file = st.file_uploader("Upload Excel file", type=["xlsm", "xlsx"])
-modify_cell(excel_file, 'Feuil1', 'C4', 5)
+
 if excel_file is not None:
+    modify_cell(excel_file, 'Feuil1', 'C4', 5)
     df = pd.read_excel(excel_file, engine='openpyxl')
 
     # Display the DataFrame
