@@ -178,6 +178,8 @@ if tableau1_file is not None and tableau2_file is not None:
         st.session_state['calculate_clicked'] = calculate_clicked
 
         # Récupération des valeurs des paramètres sélectionnés
+        print("selcted params :",selected_param1)
+        print("param1_values : ",param1_values)
         param1_values = param1_values[selected_param1].tolist()
         param2_values = param2_values[selected_param2].tolist()
         calculEtAffichage(param1_values,param2_values)
