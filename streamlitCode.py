@@ -5,7 +5,7 @@ import numpy as np
 from sympy import symbols, parse_expr
 import xlwings as xw
 from openpyxl import load_workbook
-import pywin32
+
 
 st.set_page_config(layout="wide")
 st.markdown(
@@ -119,13 +119,9 @@ def calculEtAffichage(param1_values,param2_values):
     # Demande à l'utilisateur s'il souhaite effectuer un nouveau calcul
 def modify_cell(file_path, cell, value):
     # Open the Excel workbook
-    print(file_path)
-    workbook = xw.Book(file_path)
-    workbook.range(cell).value = value
-    # Save the modified workbook
-    workbook.save()
-    # Close the workbook
-    workbook.close()
+    wb = load_workbook(filename=file_path)
+    ws = wb.worksheets[0]
+    ws[cell] = value
 # Interface utilisateur
 st.title('Calcul du KPI')
 excel_file = st.file_uploader("Upload Excel file", type=["xlsm", "xlsx"])
