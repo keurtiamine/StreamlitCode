@@ -130,9 +130,12 @@ if tableau1_file is not None and tableau2_file is not None:
     
     # Bouton de calcul
     calculate_button = st.button('Calculer')
+    flag = 0
+    if calculate_button:
+        flag = 1
     
     # Vérification si le bouton de calcul a été cliqué
-    if calculate_button:
+    if flag:
         # Récupération des valeurs des paramètres sélectionnés
         param1_values = param1_values[selected_param1].tolist()
         param2_values = param2_values[selected_param2].tolist()
