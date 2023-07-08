@@ -3,6 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from sympy import symbols, parse_expr
+import xlwings as xw
+from openpyxl import load_workbook
+
 
 st.set_page_config(layout="wide")
 st.markdown(
@@ -114,10 +117,22 @@ def calculEtAffichage(param1_values,param2_values):
         st.experimental_rerun()
 
     # Demande à l'utilisateur s'il souhaite effectuer un nouveau calcul
+def modify_cell(file_path, sheet_name, cell, value):
+    # Load the workbook
+    workbook = load_workbook(file_path)
 
+    # Select the sheet
+    sheet = workbook[sheet_name]
+
+    # Update the cell value
+    sheet[cell] = value
+
+    # Save the modified workbook
+    workbook.save(file_path)
 # Interface utilisateur
 st.title('Calcul du KPI')
 excel_file = st.file_uploader("Upload Excel file", type=["xlsm", "xlsx"])
+modify_cell(excel_file, 'Feuil1', 'C4', 5)
 if excel_file is not None:
     df = pd.read_excel(excel_file, engine='openpyxl')
 
