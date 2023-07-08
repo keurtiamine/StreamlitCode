@@ -117,18 +117,15 @@ def calculEtAffichage(param1_values,param2_values):
         st.experimental_rerun()
 
     # Demande à l'utilisateur s'il souhaite effectuer un nouveau calcul
-def modify_cell(file_path, sheet_name, cell, value):
-    # Load the workbook
-    workbook = load_workbook(file_path)
-
-    # Select the sheet
-    sheet = workbook[sheet_name]
-
-    # Update the cell value
-    sheet[cell] = value
-
+def modify_cell(file_path, cell, value):
+    # Open the Excel workbook
+    print(file_path)
+    workbook = xw.Book(file_path)
+    workbook.range(cell).value = value
     # Save the modified workbook
-    workbook.save(file_path)
+    workbook.save()
+    # Close the workbook
+    workbook.close()
 # Interface utilisateur
 st.title('Calcul du KPI')
 excel_file = st.file_uploader("Upload Excel file", type=["xlsm", "xlsx"])
