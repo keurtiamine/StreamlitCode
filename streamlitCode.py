@@ -89,7 +89,7 @@ def calculEtAffichage(param1_values,param2_values):
     st.write(kpi_df)
     excel = kpi_df.to_excel("kpi.xlsx")
     with open('kpi.xlsx', 'rb') as f:
-        st.download_button('Download', f, file_name='kpi.xlsx')
+        st.download_button('Télécharger le tableau résultat', f, file_name='kpi.xlsx')
 
     # Affichage du graphe
     st.write('Graphe du KPI :')
@@ -103,6 +103,10 @@ def calculEtAffichage(param1_values,param2_values):
     ax.legend()
     ax.grid(True)
     st.pyplot(fig)
+    #plot to image
+    fig.savefig('plot.png')
+    with open('plot.png', 'rb') as f:
+        st.download_button('Télécharger le graph', f, file_name='plot.png')
 
     recalculate_button = st.button("Calculer pour d'autre param")
     if recalculate_button:
