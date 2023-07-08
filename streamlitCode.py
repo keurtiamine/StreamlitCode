@@ -50,6 +50,7 @@ image_path = "SCHEMA BOUCLE EAU VAPEUR.jpg"
 
 # Affichage de l'image
 st.image(image_path, caption='Image', use_column_width=True)
+calculate_clicked = st.session_state.get('calculate_clicked', False)
 
 # Fonction pour calculer le KPI en fonction de l'expression mathématique et des paramètres sélectionnés
 def calculate_kpi(expression, param1, param2, norm_lower, norm_upper):
@@ -130,12 +131,12 @@ if tableau1_file is not None and tableau2_file is not None:
     
     # Bouton de calcul
     calculate_button = st.button('Calculer')
-    flag = 0
-    if calculate_button:
-        flag = 1
     
     # Vérification si le bouton de calcul a été cliqué
-    if flag:
+    if calculate_button or calculate_clicked:
+        calculate_clicked = True
+        st.session_state['calculate_clicked'] = calculate_clicked
+
         # Récupération des valeurs des paramètres sélectionnés
         param1_values = param1_values[selected_param1].tolist()
         param2_values = param2_values[selected_param2].tolist()
@@ -169,7 +170,7 @@ if tableau1_file is not None and tableau2_file is not None:
         st.pyplot(fig)
         
         # Demande à l'utilisateur s'il souhaite effectuer un nouveau calcul
-        new_calculation = st.button("Nouveau calcul")
+    new_calculation = st.button("Nouveau calcul")
         
-        if not new_calculation:
-            st.write("Fin du programme")
+    if not new_calculation:
+        st.write("Fin du programme")
