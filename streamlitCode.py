@@ -62,7 +62,7 @@ def calculate_kpi(expression, param1, param2, norm_lower, norm_upper):
     try:
         kpi_result = eval(expression, {'param1': param1, 'param2': param2})
     except Exception as e:
-        st.write("Expression mathématique invalide ou erreur de calcul ", e)
+        st.write("Expression mathématique invalide ou erreur de calcul ")
         return None
     
     # Calcul de la différence avec les normes
