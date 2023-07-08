@@ -124,14 +124,7 @@ def modify_cell(file_path, cell, value):
     ws[cell] = value
 # Interface utilisateur
 st.title('Calcul du KPI')
-excel_file = st.file_uploader("Upload Excel file", type=["xlsm", "xlsx"])
 
-if excel_file is not None:
-    modify_cell(excel_file, 'C4', 5)
-    df = pd.read_excel(excel_file, engine='openpyxl')
-
-    # Display the DataFrame
-    st.write(df)
 # Chargement des tableaux à partir des fichiers Excel
 tableau1_file = st.file_uploader('Charger le tableau 1 (Excel)', type='xlsx')
 tableau2_file = st.file_uploader('Charger le tableau 2 (Excel)', type='xlsx')
