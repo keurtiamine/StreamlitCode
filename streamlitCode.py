@@ -160,11 +160,11 @@ if tableau1_file is not None and tableau2_file is not None:
     #selectionner les lignes a utiliser
     st.write('Selectionner les lignes a utiliser :')
     #ligne de debut .
-    ligne_debut_tableau1 = st.number_input('ligne de debut tableau 1', min_value=1, max_value=1000, value=1)
+    ligne_debut_tableau1 = st.number_input('ligne de debut tableau 1', min_value=0, max_value=len(selected_tableau1), value=1)
     #ligne de fin .
-    ligne_fin = st.number_input('ligne de fin tableau 1', min_value=1, max_value=1000, value=1)
+    ligne_fin = st.number_input('ligne de fin tableau 1', min_value=1, max_value=len(selected_tableau1), value=1)
     taille = ligne_fin - ligne_debut_tableau1
-    ligne_debut_tableau2 = st.number_input('ligne de debut tableau 2', min_value=1, max_value=1000, value=1)
+    ligne_debut_tableau2 = st.number_input('ligne de debut tableau 2', min_value=0, max_value=len(selected_tableau2), value=1)
     # Récupération des lignes 1 à 12 des deux tableaux pour les paramètres
     param1_values = selected_tableau1.iloc[ligne_debut_tableau1:ligne_fin+1, :]
     param2_values = selected_tableau2.iloc[ligne_debut_tableau2:ligne_debut_tableau2+taille+1, :]
