@@ -157,10 +157,17 @@ if tableau1_file is not None and tableau2_file is not None:
     # Affichage du tableau pour le deuxième paramètre
     st.write('Tableau sélectionné pour le deuxième paramètre :')
     st.write(selected_tableau2)
-    
+    #selectionner les lignes a utiliser
+    st.write('Selectionner les lignes a utiliser :')
+    #ligne de debut .
+    ligne_debut_tableau1 = st.number_input('ligne de debut', min_value=1, max_value=1000, value=1)
+    #ligne de fin .
+    ligne_fin = st.number_input('ligne de fin', min_value=1, max_value=1000, value=1)
+    taille = ligne_fin - ligne_debut_tableau1
+    ligne_debut_tableau2 = st.number_input('ligne de debut', min_value=1, max_value=1000, value=1)
     # Récupération des lignes 1 à 12 des deux tableaux pour les paramètres
-    param1_values = selected_tableau1.iloc[1:13, :]
-    param2_values = selected_tableau2.iloc[1:13, :]
+    param1_values = selected_tableau1.iloc[ligne_debut_tableau1:ligne_fin, :]
+    param2_values = selected_tableau2.iloc[ligne_debut_tableau2:ligne_debut_tableau2+taille, :]
     
     # Sélection des colonnes (paramètres) pour chaque tableau
     param1_columns = param1_values.columns.tolist()
