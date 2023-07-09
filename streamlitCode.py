@@ -97,7 +97,7 @@ def calculEtAffichage(param1_values,param2_values):
     # Affichage du graphe
     st.write('Graphe du KPI :')
     fig, ax = plt.subplots(figsize=(10, 6))
-    ax.plot(np.arange(1, 13), kpi_values, marker='o', linestyle='-', linewidth=2, color='blue', label='KPI')
+    ax.plot(np.arange(1, len(results)), kpi_values, marker='o', linestyle='-', linewidth=2, color='blue', label='KPI')
     ax.axhline(norm_lower, color='red', linestyle='--', linewidth=2, label='Norme inférieure')
     ax.axhline(norm_upper, color='green', linestyle='--', linewidth=2, label='Norme supérieure')
     ax.set_xlabel('Index')
@@ -166,8 +166,8 @@ if tableau1_file is not None and tableau2_file is not None:
     taille = ligne_fin - ligne_debut_tableau1
     ligne_debut_tableau2 = st.number_input('ligne de debut tableau 2', min_value=1, max_value=1000, value=1)
     # Récupération des lignes 1 à 12 des deux tableaux pour les paramètres
-    param1_values = selected_tableau1.iloc[ligne_debut_tableau1:ligne_fin, :]
-    param2_values = selected_tableau2.iloc[ligne_debut_tableau2:ligne_debut_tableau2+taille, :]
+    param1_values = selected_tableau1.iloc[ligne_debut_tableau1:ligne_fin+1, :]
+    param2_values = selected_tableau2.iloc[ligne_debut_tableau2:ligne_debut_tableau2+taille+1, :]
     
     # Sélection des colonnes (paramètres) pour chaque tableau
     param1_columns = param1_values.columns.tolist()
