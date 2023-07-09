@@ -87,7 +87,7 @@ def calculEtAffichage(param1_values,param2_values):
 
     # Affichage du tableau de résultats
     var = st.write('Résultats du KPI :')
-    kpi_df = pd.DataFrame({selected_param1: param1_values, selected_param2: param2_values, 'KPI': kpi_values,
+    kpi_df = pd.DataFrame({selected_param1: param1_values, selected_param2: param2_values,kpi_name: kpi_values,
                            'Différence inférieure': diff_lower_values, 'Différence supérieure': diff_upper_values})
     st.write(kpi_df)
     excel = kpi_df.to_excel("kpi.xlsx")
@@ -185,7 +185,9 @@ if tableau1_file is not None and tableau2_file is not None:
     # Demande de la norme inférieure et supérieure du KPI
     norm_lower = st.number_input("Norme inférieure du KPI", value=0.0)
     norm_upper = st.number_input("Norme supérieure du KPI", value=1.0)
-    
+
+    #choix du nom des kpi
+    kpi_name = st.text_input("Nom du KPI", value="KPI")
     # Bouton de calcul
     calculate_button = st.button('Calculer')
     
