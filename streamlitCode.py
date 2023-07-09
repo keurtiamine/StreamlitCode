@@ -97,7 +97,7 @@ def calculEtAffichage(param1_values,param2_values):
     # Affichage du graphe
     st.write('Graphe du KPI :')
     fig, ax = plt.subplots(figsize=(10, 6))
-    ax.plot(np.arange(1, len(results)), kpi_values, marker='o', linestyle='-', linewidth=2, color='blue', label='KPI')
+    ax.plot(np.arange(1, len(kpi_values)+1), kpi_values, marker='o', linestyle='-', linewidth=2, color='blue', label='KPI')
     ax.axhline(norm_lower, color='red', linestyle='--', linewidth=2, label='Norme inférieure')
     ax.axhline(norm_upper, color='green', linestyle='--', linewidth=2, label='Norme supérieure')
     ax.set_xlabel('Index')
