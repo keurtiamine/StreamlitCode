@@ -111,7 +111,7 @@ def calculEtAffichage(param1_values,param2_values):
     with open('plot.png', 'rb') as f:
         st.download_button('Télécharger le graph', f, file_name='plot.png')
 
-    recalculate_button = st.button("Calculer pour d'autre param")
+    recalculate_button = st.button("Calculer pour d'autres paramètres")
     if recalculate_button:
         st.session_state['calculate_clicked'] = False
         st.experimental_rerun()
